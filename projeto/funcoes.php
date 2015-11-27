@@ -127,6 +127,24 @@ function getAcertos($equipe){
 	return $lista;
 }
 
+function addQuestao($id, $titulo, $problema){
+	$conexao = conectar();
+	if((is_null($id)) || ($id == ''))
+		$sql = "insert into questao (titulo, problema) values ('$titulo', '$problema')";
+	else
+		$sql = "update into questao (titulo, problema) values ('$titulo', '$problema')";
+	if (mysql_query($sql))
+
+		$result = true;
+	else
+
+		$result = false;
+
+	$desconectar($conexao);
+
+	return $result;
+}
+
 if (isset($_REQUEST["event"])){
 	switch ($_REQUEST["event"]) {
 		case 'excluirEquipe':
@@ -143,6 +161,9 @@ if (isset($_REQUEST["event"])){
 			break;
 		case 'salvarAvaliacao':
 			$code = (salvarAvaliacao($_REQUEST["id"],$_REQUEST["avaliacao"],$_REQUEST["questao"],$_REQUEST["equipe"])) ? "202" : "404";
+			break;
+		case 'addQuestao':
+			$code = (addQuestao($_REQUEST["id"], $_REQUEST["titulo"], $_REQUEST["problema"])) ? "202" : "404";
 			break;
 		default:
 			break;
